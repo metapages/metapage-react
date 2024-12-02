@@ -1,0 +1,89 @@
+{
+  "name": "@metapages/metapage-react",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/metapages/metapage-react.git"
+  },
+  "keywords": [
+    "metapage",
+    "react",
+    "hooks",
+    "metaframe",
+    "embed"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./components": {
+      "types": "./dist/components/index.d.ts",
+      "import": "./dist/components/index.js",
+      "default": "./dist/components/index.js"
+    },
+    "./hooks": {
+      "types": "./dist/hooks/index.d.ts",
+      "import": "./dist/hooks/index.js",
+      "default": "./dist/hooks/index.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/index.d.ts"
+      ],
+      "components": [
+        "./dist/components/index.d.ts"
+      ],
+      "hooks": [
+        "./dist/hooks/index.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "browser": "./dist/index.js",
+  "homepage": "https://github.com/metapages/metapage-react/tree/main/docs#readme",
+  "scripts": {
+    "note": "echo 'use just. See README.md'"
+  },
+  "peerDependencies": {
+    "@metapages/metapage": "1.x",
+    "react": "18.x"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^12.1.1",
+    "@types/node": "^20.17.7",
+    "@types/react": "^18.3.12",
+    "react": "^18.3.1",
+    "rollup-plugin-typescript-paths": "^1.5.0",
+    "tslib": "^2.8.1",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11"
+  },
+  "browserslist": {
+    "production": [
+      "last 3 and_chr versions",
+      "last 3 chrome versions",
+      "last 3 opera versions",
+      "last 3 ios_saf versions",
+      "last 3 safari versions"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "fast-json-stable-stringify": "^2.1.0"
+  }
+}
