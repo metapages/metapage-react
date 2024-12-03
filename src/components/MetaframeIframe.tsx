@@ -15,7 +15,7 @@ export type MetaframeIframeStyleProps = {
 export const MetaframeIframe: React.FC<{
   metaframe?: MetapageIFrameRpcClient;
   Wrapper?: ComponentType<any>;
-} & MetaframeIframeStyleProps> = ({ metaframe, Wrapper, style={}, className, classNameWrapper }) => {
+} & MetaframeIframeStyleProps> = ({ metaframe, Wrapper, style = {height: '100%'}, className, classNameWrapper }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -56,8 +56,9 @@ export const MetaframeIframe: React.FC<{
         
         if (!className) {
           // https://stackoverflow.com/questions/18765762/how-to-make-width-and-height-of-iframe-same-as-its-parent-div
-          iframe.style.cssText = `overflow:clip;width:100%;height:100%`;
+          iframe.style.cssText = `overflow:clip;width:100%;height:100%;maxHeight:100%;left:0;position:absolute;top:0;`;
         }
+
 
         ref.current.appendChild(iframe);
       }
@@ -86,13 +87,18 @@ export const MetaframeIframe: React.FC<{
         key={metaframe.id}
         className={classNameWrapper}
         style={{
+          overflow: "clip",
+          // display: "flex",
+          width: '100%',
+          // alignItems: 'stretch',
           position: "relative",
           ...style,
+          // height: '100%',
+          // border: '1px solid red',
+          // minHeight: '100%',
           // ...(height ? { height } : {}),
         }}
       ></div>
-
-      // <div ref={ref} className={classNameWrapper} key={metaframe.id} style={{ ...style, }}></div>
     );
   }
 };

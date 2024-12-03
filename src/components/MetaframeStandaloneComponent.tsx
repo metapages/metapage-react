@@ -136,7 +136,7 @@ export const MetaframeStandaloneComponent: React.FC<{
   return (
     <MetaframeIframe
       metaframe={metaframe}
-      style={style}
+      style={style || {height: '100%'}}
       className={className}
       classNameWrapper={classNameWrapper}
     />
