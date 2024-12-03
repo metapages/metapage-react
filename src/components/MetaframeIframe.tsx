@@ -8,7 +8,6 @@ import { MetapageIFrameRpcClient } from '@metapages/metapage';
 
 export type MetaframeIframeStyleProps = {
   style?: React.CSSProperties;
-  styleWrapper?: React.CSSProperties;
   className?: string;
   classNameWrapper?: string;
 }
@@ -16,7 +15,7 @@ export type MetaframeIframeStyleProps = {
 export const MetaframeIframe: React.FC<{
   metaframe?: MetapageIFrameRpcClient;
   Wrapper?: ComponentType<any>;
-} & MetaframeIframeStyleProps> = ({ metaframe, Wrapper, style={}, styleWrapper={}, className, classNameWrapper }) => {
+} & MetaframeIframeStyleProps> = ({ metaframe, Wrapper, style={}, className, classNameWrapper }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -82,7 +81,18 @@ export const MetaframeIframe: React.FC<{
     );
   } else {
     return (
-      <div ref={ref} className={classNameWrapper} key={metaframe.id} style={{ ...style, }}></div>
+      <div
+        ref={ref}
+        key={metaframe.id}
+        className={classNameWrapper}
+        style={{
+          position: "relative",
+          ...style,
+          // ...(height ? { height } : {}),
+        }}
+      ></div>
+
+      // <div ref={ref} className={classNameWrapper} key={metaframe.id} style={{ ...style, }}></div>
     );
   }
 };
