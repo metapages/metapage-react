@@ -88,7 +88,7 @@ export const MetaframeStandaloneComponent: React.FC<{
 
   // get the metaframe and bind the outputs
   useEffect(() => {
-    if (!metapage || !MetaframeKey || !setMetaframe) {
+    if (!metapage || metapage.isDisposed() || !MetaframeKey || !setMetaframe) {
       return;
     }
     const metaframe = metapage.getMetaframe(MetaframeKey);
