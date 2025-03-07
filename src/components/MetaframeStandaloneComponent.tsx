@@ -76,6 +76,7 @@ export const MetaframeStandaloneComponent: React.FC<{
     return () => {
       cancelled = true;
       metapage.dispose();
+      setMetapage(undefined);
       while (disposers.length > 0) {
         const disposer = disposers.pop();
         if (disposer) {
