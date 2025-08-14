@@ -1,26 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 
 import {
   MetaframeInputMap,
   Metapage,
-  MetapageDefinitionV1,
+  MetapageDefinitionV2,
   MetapageEventDefinition,
   MetapageEvents,
   MetapageIFrameRpcClient,
-} from "@metapages/metapage";
+} from '@metapages/metapage';
 
-import { MetaframeIframe } from "./MetaframeIframe";
+import { MetaframeIframe } from './MetaframeIframe';
 
 const MetaframeKey = "embed";
-
-const MetaPageTemplate: MetapageDefinitionV1 = {
-  version: "1",
-  metaframes: {
-    [MetaframeKey]: {
-      url: "",
-    },
-  },
-};
 
 export const MetaframeStandaloneComponent: React.FC<{
   url: string;
@@ -54,8 +48,14 @@ export const MetaframeStandaloneComponent: React.FC<{
   useEffect(() => {
     const disposers: (() => void)[] = [];
     // now actually create the metapage, this also instantiates the iframe objects
-    const definition = Object.assign({}, { ...MetaPageTemplate });
-    definition.metaframes.embed.url = url;
+    const definition: MetapageDefinitionV2 = {
+      version: "2",
+      metaframes: {
+        [MetaframeKey]: {
+          url,
+        },
+      },
+    };
     const metapage = new Metapage();
     metapage.debug = debug!!;
     let cancelled = false;

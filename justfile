@@ -29,7 +29,7 @@ grey               := "\\e[90m"
 
 # Build the production npm distributions in dist/metaframe and dist/metapage
 build: _build
-_build: _ensure_node_modules _build_npm
+_build: _ensure_npm_modules _build_npm
 
 _build_npm:
     #!/usr/bin/env bash
@@ -42,7 +42,7 @@ _build_npm:
     echo "✅ vite build"
 
 # watch for file changes, then build ALL into ./dist
-watch: _ensure_node_modules
+watch: _ensure_npm_modules
     #!/usr/bin/env bash
     set -euo pipefail
     echo "👀 watching and building into ./dist..."
@@ -50,19 +50,18 @@ watch: _ensure_node_modules
     echo "✅ typescript check"
     {{vite}} --watch build
 
-@_tsc +args="":
+@_tsc +args="": _ensure_npm_modules
     {{tsc}} {{args}}
 
 # Run tests
-test:
-    just ../worker/test
+test: check
 
 # Develop:
 #   1. just dev
 #   2. modify metapage/metaframe code
 #   3. refresh browser window
 # recompile metapage/metaframe src on change, and open a browser at the test page for the local metapage test
-dev: _ensure_node_modules watch
+dev: _ensure_npm_modules watch
 
 # typescript check 
 @check: (_tsc "--build")
@@ -73,7 +72,7 @@ dev: _ensure_node_modules watch
     npm view {{NPM_MODULE}} versions --json
 
 # If the version does not exist, publish the packages (metaframe+metapage)
-publish: _require_NPM_TOKEN _ensure_node_modules
+publish: _require_NPM_TOKEN _ensure_npm_modules
     #!/usr/bin/env bash
     set -euo pipefail
     VERSION=`cat package.json | jq -r '.version'`
@@ -111,5 +110,5 @@ clean:
 @_require_NPM_TOKEN:
     if [ -z "$NPM_TOKEN" ]; then echo "Missing NPM_TOKEN"; exit 1; fi
 
-@_ensure_node_modules:
+@_ensure_npm_modules:
     if [ ! -d node_modules ]; then npm i; fi
