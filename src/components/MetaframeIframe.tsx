@@ -1,21 +1,25 @@
-import React, {
-  ComponentType,
-  useEffect,
-  useRef,
-} from 'react';
+import React, { ComponentType, useEffect, useRef } from "react";
 
-import { MetapageIFrameRpcClient } from '@metapages/metapage';
+import { MetapageIFrameRpcClient } from "@metapages/metapage";
 
 export type MetaframeIframeStyleProps = {
   style?: React.CSSProperties;
   className?: string;
   classNameWrapper?: string;
-}
+};
 
-export const MetaframeIframe: React.FC<{
-  metaframe?: MetapageIFrameRpcClient;
-  Wrapper?: ComponentType<any>;
-} & MetaframeIframeStyleProps> = ({ metaframe, Wrapper, style = {height: '100%'}, className, classNameWrapper }) => {
+export const MetaframeIframe: React.FC<
+  {
+    metaframe?: MetapageIFrameRpcClient;
+    Wrapper?: ComponentType<any>;
+  } & MetaframeIframeStyleProps
+> = ({
+  metaframe,
+  Wrapper,
+  style = { height: "100%" },
+  className,
+  classNameWrapper,
+}) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -53,12 +57,11 @@ export const MetaframeIframe: React.FC<{
           ref.current.removeChild(child);
         }
         className?.split(" ").forEach((c) => iframe.classList.add(c));
-        
+
         if (!className) {
           // https://stackoverflow.com/questions/18765762/how-to-make-width-and-height-of-iframe-same-as-its-parent-div
           iframe.style.cssText = `overflow:clip;width:100%;height:100%;maxHeight:100%;left:0;position:absolute;top:0;`;
         }
-
 
         ref.current.appendChild(iframe);
       }
@@ -77,9 +80,7 @@ export const MetaframeIframe: React.FC<{
   }
 
   if (Wrapper) {
-    return (
-      <Wrapper ref={ref} key={metaframe.id}  />
-    );
+    return <Wrapper ref={ref} key={metaframe.id} />;
   } else {
     return (
       <div
@@ -89,9 +90,11 @@ export const MetaframeIframe: React.FC<{
         style={{
           overflow: "clip",
           // display: "flex",
-          width: '100%',
+          width: "100%",
           // alignItems: 'stretch',
           position: "relative",
+          background: "transparent",
+          border: "none",
           ...style,
           // height: '100%',
           // border: '1px solid red',
