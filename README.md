@@ -123,7 +123,7 @@ export const App = () => {
       <h1>Embedded metaframe</h1>
 
       <MetaframeStandaloneComponent
-        url="https://metapages.github.io/metaframe-js/"
+        url="https://js.mtfm.io/j/12a80d79290433e7d6cb38eedb1ebceeabfaca563c2fea13b0283fce6bf24b8b"
         inputs={{ code: 'console.log("hello")' }}
         onOutputs={(o) => setOutputs(o)}
         style={{ width: "100%", height: "500px" }}
