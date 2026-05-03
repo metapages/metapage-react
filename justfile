@@ -72,7 +72,7 @@ dev: _ensure_npm_modules watch
     npm view {{NPM_MODULE}} versions --json
 
 # If the version does not exist, publish the packages (metaframe+metapage)
-publish: _require_NPM_TOKEN _ensure_npm_modules
+publish: _ensure_npm_modules
     #!/usr/bin/env bash
     set -euo pipefail
     VERSION=`cat package.json | jq -r '.version'`
@@ -106,9 +106,6 @@ module_deprecate version +message:
 clean:
     @mkdir -p dist
     rm -rf dist/*
-
-@_require_NPM_TOKEN:
-    if [ -z "$NPM_TOKEN" ]; then echo "Missing NPM_TOKEN"; exit 1; fi
-
+    
 @_ensure_npm_modules:
     if [ ! -d node_modules ]; then npm i; fi
