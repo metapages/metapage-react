@@ -7,7 +7,6 @@ set dotenv-load    := true
 # library configuration
 ###########################################################################
 NPM_MODULE         := `cat package.json | jq -r .name`
-NPM_TOKEN          := env_var_or_default("NPM_TOKEN", "")
 tsc                := "./node_modules/typescript/bin/tsc"
 vite               := "NODE_OPTIONS='--max_old_space_size=16384' ./node_modules/vite/bin/vite.js"
 # minimal formatting, bold is very useful
@@ -88,14 +87,13 @@ publish: _ensure_npm_modules
     fi
     just build
     echo "PUBLISHING npm version $VERSION"
-    echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc && \
     npm publish --access public .
-    # git tag $VERSION
-    # git push origin $VERSION
+    git tag $VERSION
+    git push origin $VERSION
 
 # Unpublish version https://docs.npmjs.com/cli/v7/commands/npm-unpublish
 unpublish version:
-    @echo "❗ If this fails: you cannot use .npmrc or NPM_TOKEN, you must 'npm login' 🤷‍♀️"
+    @echo "❗ If this fails: you must 'npm login' 🤷‍♀️"
     npm unpublish {{NPM_MODULE}}@{{version}}
 
 # https://docs.npmjs.com/cli/v7/commands/npm-deprecate
@@ -106,6 +104,6 @@ module_deprecate version +message:
 clean:
     @mkdir -p dist
     rm -rf dist/*
-    
+
 @_ensure_npm_modules:
     if [ ! -d node_modules ]; then npm i; fi
