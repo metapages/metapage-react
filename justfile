@@ -88,8 +88,8 @@ publish: _ensure_npm_modules
     just build
     echo "PUBLISHING npm version $VERSION"
     npm publish --access public .
-    git tag $VERSION
-    git push origin $VERSION
+    git tag v$VERSION
+    git push origin v$VERSION
 
 # Unpublish version https://docs.npmjs.com/cli/v7/commands/npm-unpublish
 unpublish version:
