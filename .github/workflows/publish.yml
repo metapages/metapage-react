@@ -1,0 +1,82 @@
+# https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
+name: Deploy and Publish
+
+# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  deploy-and-publish:
+    # Can switch to ubuntu-latest but self-hosted is safer and faster
+    name: Deploy and Publish
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # Required for OIDC
+      contents: write # Required for tags and releases
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+
+      - name: Configure git for tagging
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - uses: extractions/setup-just@v1
+        with:
+          just-version: '1.46.0'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 23.x
+
+      - name: Ensure npm >= 11.7.0
+        run: npm install -g npm@^11.7.0
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: '2.7.13'
+
+      - name: Install sd (better sed)
+        run: |
+          curl -sSL https://github.com/chmln/sd/releases/download/v1.0.0/sd-v1.0.0-x86_64-unknown-linux-gnu.tar.gz | tar xz
+          sudo mv sd-v1.0.0-x86_64-unknown-linux-gnu/sd /usr/local/bin/
+
+      - name: Unignore build output for deploy
+        run: find . -type f -name .gitignore -delete
+
+      - name: publish module
+        id: publish
+        run: |
+          # Capture version before publishing
+          VERSION=$(cat package.json | jq -r '.version')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          # Run publish and capture if it actually published
+          OUTPUT=$(just publish 2>&1) || true
+          echo "$OUTPUT"
+
+          # Check if version was actually published (not skipped)
+          if echo "$OUTPUT" | grep -q "PUBLISHING npm version"; then
+            echo "published=true" >> $GITHUB_OUTPUT
+          else
+            echo "published=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create GitHub Release
+        if: steps.publish.outputs.published == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ steps.publish.outputs.version }}"
+          gh release create "v$VERSION" \
+            --title "v$VERSION" \
+            --generate-notes \
+            --verify-tag
+
