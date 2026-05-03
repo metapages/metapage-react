@@ -6,7 +6,7 @@ import React, {
 import {
   MetaframeInputMap,
   Metapage,
-  MetapageDefinitionV2,
+  MetapageDefinition,
   MetapageEventDefinition,
   MetapageEvents,
   MetapageIFrameRpcClient,
@@ -48,8 +48,7 @@ export const MetaframeStandaloneComponent: React.FC<{
   useEffect(() => {
     const disposers: (() => void)[] = [];
     // now actually create the metapage, this also instantiates the iframe objects
-    const definition: MetapageDefinitionV2 = {
-      version: "2",
+    const definition: MetapageDefinition = {
       metaframes: {
         [MetaframeKey]: {
           url,
@@ -95,7 +94,7 @@ export const MetaframeStandaloneComponent: React.FC<{
     setMetaframe(metaframe);
     let disposer: (() => void) | undefined;
     if (onOutputs) {
-      disposer = metaframe.onOutputs((outputs) => {
+      disposer = metaframe?.onOutputs((outputs) => {
         onOutputs(outputs);
       });
     }

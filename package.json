@@ -1,6 +1,6 @@
 {
   "name": "@metapages/metapage-react",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/metapages/metapage-react.git"
@@ -56,7 +56,7 @@
     "note": "echo 'use just. See README.md'"
   },
   "peerDependencies": {
-    "@metapages/metapage": ">=1.8.3",
+    "@metapages/metapage": "^1.10.8",
     "react": "18.x"
   },
   "devDependencies": {
